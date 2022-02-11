@@ -3,15 +3,15 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:43580",
+      "applicationUrl": "http://localhost:65146",
       "sslPort": 0
     }
   },
   "profiles": {
-    "OnBoarding_ReactProject": {
+    "MVC_with_React": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "http://localhost:5197",
+      "applicationUrl": "http://localhost:5298",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"

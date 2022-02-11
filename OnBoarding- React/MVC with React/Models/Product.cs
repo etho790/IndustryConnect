@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 
-namespace OnBoarding_ReactProject.Models
+namespace MVC_with_React.Models
 {
     public class Product
     {

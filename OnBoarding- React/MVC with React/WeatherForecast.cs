@@ -1,4 +1,4 @@
-namespace OnBoarding_ReactProject
+namespace MVC_with_React
 {
     public class WeatherForecast
     {

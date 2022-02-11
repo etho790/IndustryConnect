@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using OnBoarding_ReactProject.Models;
+using MVC_with_React.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +19,9 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ThisProjectDbContextClass>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ThisProjectDbContext")));
 
+
 var app = builder.Build();
+
 
 //ADDED 
 //builder.Services.AddSwaggerGen(options => { options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "ASP.NET CORE API", Version = "v1" }); });
@@ -32,6 +34,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseStaticFiles();
 app.UseRouting();
+
 
 //ADDED NEXT 2 LINES 
 app.UseSwagger();
