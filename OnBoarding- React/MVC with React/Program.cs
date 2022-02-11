@@ -20,11 +20,13 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ThisProjectDbContextClass>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ThisProjectDbContext")));
 
 
+//ADDED  FOR SWAGGER
+builder.Services.AddSwaggerGen(options => { options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "ASP.NET CORE API", Version = "v1" }); });
+
+
 var app = builder.Build();
 
 
-//ADDED 
-//builder.Services.AddSwaggerGen(options => { options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "ASP.NET CORE API", Version = "v1" }); });
 
 
 // Configure the HTTP request pipeline.
@@ -32,16 +34,22 @@ if (!app.Environment.IsDevelopment())
 {
 }
 
+
+
+
 app.UseStaticFiles();
-app.UseRouting();
 
-
-//ADDED NEXT 2 LINES 
+//ADDED NEXT 2 LINES  FOR SWAGGER
 app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "React ASP.NET");
 });
+
+
+app.UseRouting();
+
+
 
 
 app.MapControllerRoute(
