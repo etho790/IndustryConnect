@@ -19,6 +19,5 @@ namespace MVC_with_React.Models
         public int Price { get; set; }
 
 
-        //private ICollection <Sales> ProductSold {get; set;}
     }
 }

@@ -39,7 +39,9 @@ if (!app.Environment.IsDevelopment())
 
 app.UseStaticFiles();
 
-//ADDED NEXT 2 LINES  FOR SWAGGER
+
+//NOTE TO GET TO SWAGGER FOR OUR BACKEND, ADD /swagger/index.html at the end of our local host number
+//ADDED NEXT 2 LINES  FOR SWAGGER, 
 app.UseSwagger();
 app.UseSwaggerUI(options =>
 {

@@ -19,7 +19,6 @@ namespace MVC_with_React.Models
             public string Address { get; set; }
 
 
-            //private virtual ICollection <Sales> ProductSold {get; set;}
     }
     
 }
