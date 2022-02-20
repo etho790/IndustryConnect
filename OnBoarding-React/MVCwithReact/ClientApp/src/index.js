@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'semantic-ui-css/semantic.min.css'       //added
@@ -7,7 +6,6 @@ import App from './App';        //<-- goes to the app.js
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 
-import { Button } from 'semantic-ui-react'  //added
 
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
