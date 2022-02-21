@@ -1,43 +1,40 @@
 ﻿
 import React, { Component } from 'react';
 //import axios from 'axios';      //for LINKING with backend
-import { Table, Container, Button, Header, Modal,Icon,  Form } from 'semantic-ui-react'  //added
+import { Table, Container, Button, Header, Modal, Icon, Checkbox, Form, View, StyleSheet } from 'semantic-ui-react'  //added
 
-
-
-export class Customer extends Component {
-    static displayName = Customer.name;
+export class Store extends Component{
+    static displayName = Store.name;
 
     constructor(props) {
         super(props);
 
         this.state = {      //just setting a few made up variables in regards to our data we want displayed
-            
+
             person: []       //person is an object created to recieve attributes from our data that we get
         }
-
     }
 
     componentDidMount()//fetches data here
     {
         let url = "http://localhost:5298/api/Customers";   //this is the data we are getting,
         //the url is gotten from the swagger get function for each of the api
-        fetch(url).then((response) => response.json()).then((data) => { this.setState({ person: data })})
+        fetch(url).then(response => response.json()).then((data) => { this.setState({ person: data }) })
         // the fetch function gets the json file and stores it in the person object 
 
         //here person will be filled by the first element in the data var
         //and so this person object is stored in state
-         //IMPORTANT THAT DATA.{NAME OF THE ARRAY}<-- IS SPECIFIED
+        //IMPORTANT THAT DATA.{NAME OF THE ARRAY}<-- IS SPECIFIED
 
         //enables us to see the variables in the url in our console on our browser, easier way to seeing data
         //in the log you see arrays in the first array (result), 
         //in order to output anything it has to be the specific variable in each array that you're calling
-      
+
 
     }
 
     static RenderTableDynamically(input) {//The map function dynamically creates rows for each customer created
-       
+
 
         //NOTE: the attributes for the customer should be copied from the JSON file exactly as written
         return (
@@ -76,25 +73,25 @@ export class Customer extends Component {
                                         </Form>
                                     }
                                 </Modal.Content>
-                                
-                                    <Modal.Actions>
+
+                                <Modal.Actions>
                                     <Button color='black'/* onClick={() => this.setOpen(false)}*/>
                                         Cancel
                                     </Button>
-                                    <Button  icon labelPosition='right' color='green' /*onClick={() => this.setOpen(false)}*/>
-                                         edit
-                                         <Icon name='checkmark'/></Button>                                   
-                                    </Modal.Actions>
-                                </Modal>
+                                    <Button icon labelPosition='right' color='green' /*onClick={() => this.setOpen(false)}*/>
+                                        edit
+                                        <Icon name='checkmark' /></Button>
+                                </Modal.Actions>
+                            </Modal>
                             </Table.Cell>
 
 
 
                             <Table.Cell><Modal
-                                trigger={<Button color='red'><Icon name='trash alternate' />Delete</Button>}>                                
+                                trigger={<Button color='red'><Icon name='trash alternate' />Delete</Button>}>
                                 <Header content='Delete Customer' />
                                 <Modal.Content>
-                                <b>Are you Sure?</b>
+                                    <b>Are you Sure?</b>
                                 </Modal.Content>
                                 <Modal.Actions>
                                     <Button color='black' /*onClick={() => this.setOpen(false)}*/>
@@ -122,17 +119,17 @@ export class Customer extends Component {
 
 
     render() {
-       
+
         return (
 
             <div>
                 <p></p>
 
                 <Modal
-                     trigger={<Button primary>New Customer</Button>}
-                     size={'tiny'}>                                
-                     <Header content='Create Customer' />
-                     <Modal.Content>
+                    trigger={<Button primary>New Customer</Button>}
+                    size={'tiny'}>
+                    <Header content='Create Customer' />
+                    <Modal.Content>
                         <Form >
                             <Form.Field>
                                 <Container textAlign='justified'><div>Name </div></Container>
@@ -144,22 +141,47 @@ export class Customer extends Component {
                                 <Form.Input placeholder='Address' width={12} fluid />
                             </Form.Field>
                         </Form>
-                        </Modal.Content>
-                     <Modal.Actions>
-                         <Button color='black' /*onClick={() => this.setOpen(false)}*/>
-                             Cancel
-                         </Button>
-                         <Button  icon labelPosition='right' color='green' /*onClick={() => this.setOpen(false)}*/>
-                                         create
-                            <Icon name='checkmark'/></Button>    
-                     </Modal.Actions>
+                    </Modal.Content>
+                    <Modal.Actions>
+                        <Button color='black' /*onClick={() => this.setOpen(false)}*/>
+                            Cancel
+                        </Button>
+                        <Button icon labelPosition='right' color='green' /*onClick={() => this.setOpen(false)}*/>
+                            create
+                            <Icon name='checkmark' /></Button>
+                    </Modal.Actions>
                 </Modal>
 
-                {Customer.RenderTableDynamically(this.state.person)}
+                {Store.RenderTableDynamically(this.state.person)}
             </div >
         );
     }
 
 
 
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ }
+

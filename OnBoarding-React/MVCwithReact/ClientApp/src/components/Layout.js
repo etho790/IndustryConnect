@@ -39,7 +39,7 @@ export class Layout extends Component {
                                 
                             />
                             <Menu.Item
-                                as={Link }to="/Counter"
+                                as={Link }to="/Product"
                                 name='Products'
                                 active={activeItem === 'Products'}
                                 onClick={this.handleItemClick}
@@ -52,7 +52,7 @@ export class Layout extends Component {
                             
                             />
                             <Menu.Item
-                                as={Link } to="/Counter"
+                                as={Link} to="/Counter"
                                 name='Sales'
                                 active={activeItem === 'Sales'}
                                 onClick={this.handleItemClick}

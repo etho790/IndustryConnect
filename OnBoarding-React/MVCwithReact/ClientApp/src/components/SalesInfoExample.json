@@ -1,0 +1,175 @@
+{
+    "carts": [
+        {
+            "id": 1,
+            "products": [
+                {
+                    "id": 59,
+                    "Product": "Spring and summershoes",
+                    "price": 20,
+                    "Store": "Vallejo",
+                    "total": 60,
+                    "Customer": "Terry",
+                    "discountedPrice": 55
+                },
+                {
+                    "id": 88,
+                    "Product": "TC Reusable Silicone Magic Washing Gloves",
+                    "price": 29,
+                    "Store": "Diamondstown",
+                    "total": 58,
+                    "Customer": "John",
+                    "discountedPrice": 56
+                },
+                {
+                    "id": 18,
+                    "Product": "Oil Free Moisturizer 100ml",
+                    "price": 40,
+                    "Store": "Blackrock",
+                    "total": 80,
+                    "Customer": "ollie",
+                    "discountedPrice": 70
+                },
+                {
+                    "id": 95,
+                    "Product": "Wholesale cargo lashing Belt",
+                    "price": 930,
+                    "Store": "Crumbston",
+                    "total": 930,
+                    "Customer": "Brock",
+                    "discountedPrice": 766
+                },
+                {
+                    "id": 39,
+                    "Product": "Women Sweaters Wool",
+                    "price": 600,
+                    "Store": "Cessvile",
+                    "total": 1200,
+                    "Customer": "Sheldon",
+                    "discountedPrice": 994
+                }
+            ],
+            "total": 2328,
+            "discountedTotal": 1941,
+            "userId": 97,
+            "totalProducts": 5,
+            "totalStore": 10
+        },
+        {
+            "id": 2,
+            "products": [
+                {
+                    "id": 96,
+                    "Product": "lighting ceiling kitchen",
+                    "price": 30,
+                    "Store": "Avondale",
+                    "total": 60,
+                    "Customer": "Terrill",
+                    "discountedPrice": 51
+                },
+                {
+                    "id": 91,
+                    "Product": "Black Motorbike",
+                    "price": 569,
+                    "Store": "Carson",
+                    "total": 1707,
+                    "Customer": "Mavis",
+                    "discountedPrice": 1474
+                },
+                {
+                    "id": 9,
+                    "Product": "Infinix INBOOK",
+                    "price": 1099,
+                    "Store": "Manchester",
+                    "total": 1099,
+                    "Customer": "Miles",
+                    "discountedPrice": 969
+                },
+                {
+                    "id": 16,
+                    "Product": "Hyaluronic Acid Serum",
+                    "price": 19,
+                    "Store": "West Windsor",
+                    "total": 19,
+                    "Customer": "Brown",
+                    "discountedPrice": 16
+                },
+                {
+                    "id": 54,
+                    "Product": "Pubg Printed Graphic T-Shirt",
+                    "price": 46,
+                    "Store": "Glen Burnie",
+                    "total": 138,
+                    "Customer": "Alison",
+                    "discountedPrice": 115
+                }
+            ],
+            "total": 3023,
+            "discountedTotal": 2625,
+            "userId": 30,
+            "totalProducts": 5,
+            "totalStore": 10
+        },
+        {
+            "id": 3,
+            "products": [
+                {
+                    "id": 37,
+                    "Product": "ank Tops for Womens/Girls",
+                    "price": 50,
+                    "Store": "Louisville",
+                    "total": 100,
+                    "Customer": "Amber",
+                    "discountedPrice": 88
+                },
+                {
+                    "id": 80,
+                    "Product": "Chain Pin Tassel Earrings",
+                    "price": 45,
+                    "Store": "Fayetteville",
+                    "total": 135,
+                    "Customer": "Oleta",
+                    "discountedPrice": 111
+                },
+                {
+                    "id": 68,
+                    "Product": "Stylish Luxury Digital Watch",
+                    "price": 57,
+                    "Store": "Nashville",
+                    "total": 171,
+                    "Customer": "Valijo",
+                    "discountedPrice": 156
+                },
+                {
+                    "id": 81,
+                    "Product": "Round Silver Frame Sun Glasses",
+                    "price": 19,
+                    "Store": "Arvada",
+                    "total": 19,
+                    "Customer": "Demetrius",
+                    "discountedPrice": 17
+                },
+                {
+                    "id": 90,
+                    "Product": "Cycle Bike Glow",
+                    "price": 35,
+                    "Store": "Crofton",
+                    "total": 35,
+                    "Customer": "Ewell",
+                    "discountedPrice": 31
+                }
+            ],
+            "total": 460,
+            "discountedTotal": 403,
+            "userId": 63,
+            "totalProducts": 5,
+            "totalStore": 10
+        
+        }
+        
+       
+    ],
+    "total": 20,
+    "skip": 0,
+    "limit": 20
+}

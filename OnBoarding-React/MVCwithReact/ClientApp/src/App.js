@@ -5,6 +5,8 @@ import { Home } from './components/Home';
 import { Customer } from './components/Customer';
 import { Counter } from './components/Counter';
 import './custom.css'
+import { Product } from './components/Product';
+import { Store } from './components/Store';
 
 
 export default class App extends Component {
@@ -16,8 +18,10 @@ export default class App extends Component {
     return (
       <Layout>
         <Route exact path='/Home' component={Home} />
-         <Route path='/counter' component={Counter} />  
+        
             <Route path='/Customer' component={Customer} />
+            <Route path='/Product' component={Product} />
+            
       </Layout>
     );
   }
