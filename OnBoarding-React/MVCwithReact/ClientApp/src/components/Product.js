@@ -1,5 +1,6 @@
 ﻿
 import React, { Component } from 'react';
+import axios from 'axios';      //for LINKING with backend
 import { Table, Container, Button, Header, Modal, Icon, Checkbox, Form, View, StyleSheet } from 'semantic-ui-react'  //added
 
 
@@ -18,20 +19,20 @@ export class Product extends Component{
     componentDidMount()//fetches data here
     {
         let url = "http://localhost:5298/api/Products";   //this is the data we are getting
-        fetch(url).then(response => response.json()).then((data) => { this.setState({ Products: data }) })
-         // the fetch function gets the json file and stores it in the Products object
 
-              
-        //here Products will be filled by the first element in the data var
+        //fetch(url).then((response) => response.json()).then((data) => { this.setState({ Products: data }) })
+        // the fetch function gets the json file and stores it in the Products object 
+
+        axios.get(url).then(response => { const Products = response.data; this.setState({ Products }); });
+
+        //here Products will be filled by the first element 
         //and so this Products object is stored in state
-        //IMPORTANT THAT DATA.{NAME OF THE ARRAY}<-- IS SPECIFIED
-
+         //IMPORTANT THAT DATA.{NAME OF THE ARRAY}<-- IS SPECIFIED
 
         //enables us to see the variables in the url in our console on our browser, easier way to seeing data
         //in the log you see arrays in the first array (result), 
         //in order to output anything it has to be the specific variable in each array that you're calling
      
-
     }
 
 

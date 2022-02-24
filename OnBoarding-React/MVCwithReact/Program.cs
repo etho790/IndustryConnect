@@ -37,7 +37,7 @@ if (!app.Environment.IsDevelopment())
 
 
 //ADDED FOR THE LINKING BIT!!
-//app.UseCors(options=> { options.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true); });
+app.UseCors(options=> { options.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true); });
 
 
 

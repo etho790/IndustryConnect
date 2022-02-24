@@ -45,7 +45,7 @@ export class Layout extends Component {
                                 onClick={this.handleItemClick}
                             />
                             <Menu.Item
-                                 as={Link } to="/Counter"
+                            as={Link} to="/Store"
                                 name='Stores'
                                 active={activeItem === 'Stores'}
                                 onClick={this.handleItemClick}

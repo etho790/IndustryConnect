@@ -1,6 +1,6 @@
 ﻿
 import React, { Component } from 'react';
-//import axios from 'axios';      //for LINKING with backend
+import axios from 'axios';      //for LINKING with backend
 import { Table, Container, Button, Header, Modal,Icon,  Form } from 'semantic-ui-react'  //added
 
 
@@ -22,10 +22,15 @@ export class Customer extends Component {
     {
         let url = "http://localhost:5298/api/Customers";   //this is the data we are getting,
         //the url is gotten from the swagger get function for each of the api
-        fetch(url).then((response) => response.json()).then((data) => { this.setState({ person: data })})
-        // the fetch function gets the json file and stores it in the person object 
 
-        //here person will be filled by the first element in the data var
+        //fetch(url).then((response) => response.json()).then((data) => { this.setState({ person: data }) })
+         // the fetch function gets the json file and stores it in the person object 
+
+
+        axios.get(url).then(response => { const person = response.data; this.setState({ person }); });
+
+       
+        //here person will be filled by the first element 
         //and so this person object is stored in state
          //IMPORTANT THAT DATA.{NAME OF THE ARRAY}<-- IS SPECIFIED
 
