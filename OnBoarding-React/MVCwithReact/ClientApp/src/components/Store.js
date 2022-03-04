@@ -10,7 +10,7 @@ const Store = (props) => {
     // NEW ADD CHRIS
     const [selectedProject, setSelectedProject] = useState(null)   
     const [open, setOpen] = React.useState(false)
-    const [secondModalOpen, setsecondModalOpen] = React.useState(false)
+    const [CreateModalOpen, setCreateModalOpen] = React.useState(false)
 
     const expandModal = (project) => {
         setSelectedProject(project);
@@ -21,17 +21,19 @@ const Store = (props) => {
         setSelectedProject(null);
         setOpen(false);
     }
+
+
     /*
-    const expandDeleteModal = (project) => {
-        setxProject(project);
+    const expandCreateModal = (project) => {
+        setCreateModalOpen(project);
         setOpen(true);
     }
 
-    const closeDeleteModal = () => {
-        setxProject(null);
+    const closeCreateModal = () => {
+        setCreateModalOpen(null);
         setOpen(false);
-    }
-    */
+    }*/
+    
    
     //SEARCH
     //use state is the hook that is stored in the variable storeList.
@@ -39,7 +41,6 @@ const Store = (props) => {
     //the minute a value is passed in it via function call, thereby the value in storeList
     //LIST STORE
     const [storeList, setStoreList] = useState([]);
-
     const [NewStoreName, setNewStoreName] = useState([]);
     const [NewStoreAddress, setNewStoreAddress] = useState([]);
 
@@ -68,7 +69,6 @@ const Store = (props) => {
         const index = NameRef.findIndex((item) => item.storeId === StoreName.storeId);
         //only give us the index if the element with the storeid within NameRef exactly matches the storeid of the current element in StoreName
         
-
 
         const { name, value } = CurrentIteratorDataValue.target;
         //essentially CurrentEntry.target consists of input placeholder, name, type & value tags that are updated.
@@ -136,25 +136,26 @@ const Store = (props) => {
     }
 
     const handleinputAdd = () => {
-
-        
+        //creating 2 new local vars that hold the hook variables array AddressRef & NameRef
         let AddressRef = [...NewStoreAddress]
-
         let NameRef = [...NewStoreName];
 
+        //completing the last element's address value and storing it in the NameRef array to hold the completed array
         NameRef[NameRef.length - 1].address = AddressRef[AddressRef.length - 1].address
-
-        
-        
+        //updates it in the official array
         setStoreList(NameRef);
-        
-        const StoreEntry = NameRef[NameRef.length - 1]
-        console.log(StoreEntry)
-        axios.post("http://localhost:5298/api/Stores", StoreEntry); //<-- doesnt work 
+
+        //For the post request, axios only needs the name & address, as the storeId is automatically generated
+        //StoreEntry only holds the name & address of the current element from the Nameref array
+        const StoreEntry = { "name": NameRef[NameRef.length - 1].name, "address": NameRef[NameRef.length - 1].address }
+            console.log(StoreEntry)
+        axios.post("http://localhost:5298/api/Stores", StoreEntry); 
         //ADDS!!!!!!
+
+        setCreateModalOpen(false);
     }
     const handleAddAddress = (StoreAddress, CurrentIteratorDataValue) => {
-        //storename is nothing & undefined
+        //storename is defined to be an empty element with storeid, name & address non defined
         
         let NameRef = [...storeList];
         //initialize new array for sole reason to find max storeid
@@ -183,7 +184,7 @@ const Store = (props) => {
         
     }
     const handleAddName = (StoreName, CurrentIteratorDataValue) => {
-        //storename is nothing & undefined
+        //storename is defined to be an empty element with storeid, name & address non defined
         
         let NameRef = [...storeList];
 
@@ -219,30 +220,31 @@ const Store = (props) => {
 
     return (
         <div >
-            <p></p>
+            <p></p>           
             <Modal
-                trigger={<Button primary>New Store</Button>}
+                onClose={() => setCreateModalOpen(false)}
+                onOpen={() => setCreateModalOpen(true)}
+                open={CreateModalOpen}
+                trigger={<Button primary >New Store</Button>}
                 size={'tiny'}>
                 <Header content='Create Store' />
                 <Modal.Content>
                     <Form >
                         <Form.Field>
                             <Container textAlign='justified'><div>Name </div></Container>
-                            <Form.Input placeholder='Name' width={12} fluid name="name" value={storeList.name} onChange={(e) => handleAddName({
-                                "storeId": '', "name": '', "address": ''
-                            }, e)} />
+                            <Form.Input placeholder='Name' width={12} fluid name="name" value={storeList.name}
+                                onChange={(e) => handleAddName({"storeId": '', "name": '', "address": ''}, e)} />
 
                         </Form.Field>
                         <Form.Field>
                             <Container textAlign='justified'><p>Address </p></Container>
-                            <Form.Input placeholder='Address' width={12} fluid name="address" value={storeList.address} onChange={(e) => handleAddAddress({
-                                "storeId": '', "name": '', "address": ''
-                            }, e)} />
+                            <Form.Input placeholder='Address' width={12} fluid name="address" value={storeList.address}
+                                onChange={(e) => handleAddAddress({"storeId": '', "name": '', "address": ''}, e)} />
                         </Form.Field>
                     </Form>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button color='black' /*onClick={() => this.setOpen(false)}*/>
+                    <Button color='black' onClick={() => setCreateModalOpen(false)}>
                         Cancel
                     </Button>
                     <Button icon labelPosition='right' color='green' onClick={(e) => handleinputAdd()}>
