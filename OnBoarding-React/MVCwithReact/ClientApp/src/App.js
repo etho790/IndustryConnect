@@ -6,7 +6,7 @@ import { Customer } from './components/Customer';
 import { Counter } from './components/Counter';
 import './custom.css'
 import { Product } from './components/Product';
-import { Store } from './components/Store';
+import Store  from './components/Store';
 
 
 export default class App extends Component {
