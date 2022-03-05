@@ -8,31 +8,31 @@ const Store = (props) => {
 
 
     // NEW ADD CHRIS
-    const [selectedProject, setSelectedProject] = useState(null)   
+    const [SelectedCurrentElement, setSelectedCurrentElement] = useState(null)   
     const [open, setOpen] = React.useState(false)
     const [CreateModalOpen, setCreateModalOpen] = React.useState(false)
+    const [DeleteModalOpen, setDeleteModalOpen] = React.useState(false)
 
-    const expandModal = (project) => {
-        setSelectedProject(project);
+    const expandModal = (CurrentElement) => {
+        setSelectedCurrentElement(CurrentElement);
         setOpen(true);
     }
 
     const closeModal = () => {
-        setSelectedProject(null);
+        setSelectedCurrentElement(null);
         setOpen(false);
     }
 
-
-    /*
-    const expandCreateModal = (project) => {
-        setCreateModalOpen(project);
-        setOpen(true);
+    const expandDeleteModal = (CurrentElement) => {
+        setSelectedCurrentElement(CurrentElement);
+        setDeleteModalOpen(true);
     }
 
-    const closeCreateModal = () => {
-        setCreateModalOpen(null);
-        setOpen(false);
-    }*/
+    const closeDeleteModal = () => {
+        setSelectedCurrentElement(null);
+        setDeleteModalOpen(false);
+    }
+
     
    
     //SEARCH
@@ -91,7 +91,7 @@ const Store = (props) => {
 
 
         // NEW ADD CHRIS
-        setSelectedProject(NameRef[index]);
+        setSelectedCurrentElement(NameRef[index]);
 
         console.log(NameRef)
     }
@@ -107,13 +107,15 @@ const Store = (props) => {
 
 
         // NEW ADD CHRIS
-        setSelectedProject(NameRef[index]);
+        setSelectedCurrentElement(NameRef[index]);
 
         console.log(NameRef)
     }
 
     const handleinput = (StoreEntry) => {
         // the minute 'handleinput' is called, it automatically should be able to change or manipulate with the values of ParameterName
+
+        console.log(StoreEntry)
 
         axios.put('http://localhost:5298/api/Stores/' + StoreEntry.storeId, StoreEntry);
         //UPDATES!!!!!!
@@ -130,9 +132,13 @@ const Store = (props) => {
 
         //updates it in the official array
         setStoreList(NameRef);
+
         //deletes it from the api/backend
-        axios.delete('http://localhost:5298/api/Stores/' + StoreEntry.storeId, StoreEntry);
-      
+        axios.delete('http://localhost:5298/api/Stores/' + StoreEntry.storeId);
+
+        console.log(StoreEntry)
+
+       
     }
 
     const handleinputAdd = () => {
@@ -152,6 +158,7 @@ const Store = (props) => {
         axios.post("http://localhost:5298/api/Stores", StoreEntry); 
         //ADDS!!!!!!
 
+        //CLOSE THE MODAL
         setCreateModalOpen(false);
     }
     const handleAddAddress = (StoreAddress, CurrentIteratorDataValue) => {
@@ -281,13 +288,13 @@ const Store = (props) => {
                                         <Form >
                                             <Form.Field>
                                                 <Container textAlign='justified'><div>Name </div></Container>
-                                                    <Form.Input placeholder='Name' width={12} value={selectedProject && selectedProject.storeName}
+                                                    <Form.Input placeholder='Name' width={12} value={SelectedCurrentElement && SelectedCurrentElement.storeName}
                                                     /*the name attribute is important otherwise you cant pass values for submission*/
-                                                        name="name" onChange={handleChangeName.bind(this, selectedProject)} />
+                                                        name="name" onChange={handleChangeName.bind(this, SelectedCurrentElement)} />
                                             </Form.Field>
                                             <Form.Field>
                                                 <Container textAlign='justified'><p>Address </p></Container>
-                                                    <Form.Input placeholder='Address' width={12} value={selectedProject && selectedProject.storeAddress} name="address" onChange={handleChangeAddress.bind(this, selectedProject)} />
+                                                    <Form.Input placeholder='Address' width={12} value={SelectedCurrentElement && SelectedCurrentElement.storeAddress} name="address" onChange={handleChangeAddress.bind(this, SelectedCurrentElement)} />
                                             </Form.Field>
                                         </Form>
                                     }
@@ -298,7 +305,7 @@ const Store = (props) => {
                                         Cancel
                                     </Button>
                                         <Button icon labelPosition='right' color='green' onClick={() => {
-                                            handleinput(Storez);
+                                            handleinput(SelectedCurrentElement);
                                             closeModal();
                                         }} >
                                         edit
@@ -310,20 +317,19 @@ const Store = (props) => {
 
 
                             <Table.Cell>
-                               
-                                <Modal /*open={openDeleteModal}
-                                    onClose={() => setOpenDeleteModal(false)}
-                                    onOpen={() => setOpenDeleteModal(true)}*/
-                                    trigger={<Button color='red' ><Icon name='trash alternate' />Delete</Button>}                                >
+                                <Button color='red' onClick={() => expandDeleteModal(Storez)}><Icon name='trash alternate' />Delete</Button>
+                                <Modal open={DeleteModalOpen}
+                                    onClose={() => setDeleteModalOpen(false)}
+                                    onOpen={() => setDeleteModalOpen(true)}>
                                 <Header content='Delete Store' />
                                 <Modal.Content>
                                     <b>Are you Sure?</b>
                                 </Modal.Content>
                                 <Modal.Actions>
-                                        <Button color='black' /*onClick={closeDeleteModal}*/>
+                                        <Button color='black' onClick={ closeDeleteModal}>
                                         Cancel
                                     </Button>
-                                    <Button color='red' onClick={(e) => handleinputDelete(Storez)}>
+                                        <Button color='red' onClick={(e) => { handleinputDelete(SelectedCurrentElement); closeModal() }}>
                                         <Icon name='close' /> delete
                                     </Button>
                                 </Modal.Actions>
@@ -343,8 +349,6 @@ const Store = (props) => {
         </div>
     );
 
-    //onChange={(e) => setSearchParameterName(e.target.value)}, essentially dynamically plugs in the dynamic values 'e.target.value'
-    //in
 }
 
 export default Store;
