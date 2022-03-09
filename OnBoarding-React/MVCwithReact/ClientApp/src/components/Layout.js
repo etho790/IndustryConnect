@@ -52,16 +52,14 @@ export class Layout extends Component {
                             
                             />
                             <Menu.Item
-                                as={Link} to="/Counter"
+                                as={Link} to="/Sale"
                                 name='Sales'
                                 active={activeItem === 'Sales'}
                                 onClick={this.handleItemClick}
-                            
+
                             />
                         </Menu>
-                    </Segment>
-
-               
+                    </Segment>               
                 <Container>
                     {this.props.children}
                 </Container>

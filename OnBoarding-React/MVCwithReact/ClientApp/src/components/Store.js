@@ -1,11 +1,11 @@
 ﻿
-import React, { Component, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';      //for LINKING with backend
-import { Table, Container, Button, Header, Modal, Icon, Checkbox, Form, View, StyleSheet } from 'semantic-ui-react'  //added
+import { Table, Container, Button, Header, Modal, Icon, Form } from 'semantic-ui-react'  //added
 
 const Store = (props) => {
 
-
+   
 
     // NEW ADD CHRIS
     const [SelectedCurrentElement, setSelectedCurrentElement] = useState(null)   
@@ -14,8 +14,9 @@ const Store = (props) => {
     const [DeleteModalOpen, setDeleteModalOpen] = React.useState(false)
 
     const expandModal = (CurrentElement) => {
-        setSelectedCurrentElement(CurrentElement);
-        setOpen(true);
+        //essentially is the iterator passed in pointing to the current element
+        setSelectedCurrentElement(CurrentElement);  //hook takes in the current element
+        setOpen(true);          //this hook is set to true
     }
 
     const closeModal = () => {
@@ -24,6 +25,7 @@ const Store = (props) => {
     }
 
     const expandDeleteModal = (CurrentElement) => {
+         //essentially is the iterator passed in pointing to the current element
         setSelectedCurrentElement(CurrentElement);
         setDeleteModalOpen(true);
     }
@@ -32,8 +34,7 @@ const Store = (props) => {
         setSelectedCurrentElement(null);
         setDeleteModalOpen(false);
     }
-
-    
+     
    
     //SEARCH
     //use state is the hook that is stored in the variable storeList.
@@ -53,7 +54,8 @@ const Store = (props) => {
         });
     }
 
-    useEffect(() => searchItems() /*if [] run searchitems() once & dont run again*/ , []);
+    //useeffect enables us to run code on every render, so anytime theres a render the code in here is activated
+    useEffect(() => searchItems(), []   /*if [] run searchitems() once & dont run again*/);
 
     const handleChangeName = (StoreName, CurrentIteratorDataValue) => {
         //'StoreName' or 'this' thats passed into the function call essentially is the current element in the array
@@ -88,37 +90,36 @@ const Store = (props) => {
         setStoreList(NameRef);
         //SAVES!!!!!!!!!!
 
-
-
-        // NEW ADD CHRIS
+        // add the current element in the hook
         setSelectedCurrentElement(NameRef[index]);
 
-        console.log(NameRef)
+       
     }
 
     const handleChangeAddress = (StoreAddress, CurrentIteratorDataValue) => {
         let NameRef = [...storeList];
         const index = NameRef.findIndex((item) => item.storeId === StoreAddress.storeId);
-        const { name, value } = CurrentIteratorDataValue.target;
-      
+        const { name, value } = CurrentIteratorDataValue.target;      
 
         NameRef[index] = { ...StoreAddress, [name]: value };
         setStoreList(NameRef);
 
-
         // NEW ADD CHRIS
-        setSelectedCurrentElement(NameRef[index]);
-
-        console.log(NameRef)
+        setSelectedCurrentElement(NameRef[index]);       
     }
 
     const handleinput = (StoreEntry) => {
         // the minute 'handleinput' is called, it automatically should be able to change or manipulate with the values of ParameterName
+        if (StoreEntry.name === null || StoreEntry.name.match(/^ *$/) !== null || StoreEntry.address === null || StoreEntry.address.match(/^ *$/) !== null) {
+            //the minute any of the attributes in the current entry has a null value or whitespace it wont go further
+            console.log("ERROR!!!!!! EMPTY ENTRY!!!!!!!!")
+        }
+        else {
+            console.log("SUCCESS ITS NOT AN EMPTY ENTRY, current array = ", StoreEntry)
 
-        console.log(StoreEntry)
-
-        axios.put('http://localhost:5298/api/Stores/' + StoreEntry.storeId, StoreEntry);
-        //UPDATES!!!!!!
+            axios.put('http://localhost:5298/api/Stores/' + StoreEntry.storeId, StoreEntry);
+             //UPDATES!!!!!!
+        }
     }
 
     const handleinputDelete = (StoreEntry) => {
@@ -133,102 +134,101 @@ const Store = (props) => {
         //updates it in the official array
         setStoreList(NameRef);
 
-        //deletes it from the api/backend
+        //deletes it from the api/backend. The delete function only takees the url + the id of the entry in its url
         axios.delete('http://localhost:5298/api/Stores/' + StoreEntry.storeId);
 
-        console.log(StoreEntry)
-
-       
+        console.log("You have deleted this entry ->", StoreEntry)
+               
     }
 
+   
     const handleinputAdd = () => {
+                
         //creating 2 new local vars that hold the hook variables array AddressRef & NameRef
-        let AddressRef = [...NewStoreAddress]
         let NameRef = [...NewStoreName];
+        let AddressRef = [...NewStoreAddress]
+            
 
-        //completing the last element's address value and storing it in the NameRef array to hold the completed array
-        NameRef[NameRef.length - 1].address = AddressRef[AddressRef.length - 1].address
-        //updates it in the official array
-        setStoreList(NameRef);
+        if (AddressRef.length != 0 && NameRef.length != 0) {
+            //condition to force the user to enter something in both fields before clicking on submit
+        
+            //completing the last element's address value and storing it in the NameRef array to hold the completed array
+            NameRef[NameRef.length - 1].address = AddressRef[AddressRef.length - 1].address
 
-        //For the post request, axios only needs the name & address, as the storeId is automatically generated
-        //StoreEntry only holds the name & address of the current element from the Nameref array
-        const StoreEntry = { "name": NameRef[NameRef.length - 1].name, "address": NameRef[NameRef.length - 1].address }
-            console.log(StoreEntry)
-        axios.post("http://localhost:5298/api/Stores", StoreEntry); 
-        //ADDS!!!!!!
 
-        //CLOSE THE MODAL
-        setCreateModalOpen(false);
+            //For the post request, axios only needs the name & address, as the storeId is automatically generated
+            //StoreEntry only holds the name & address of the current element from the Nameref array
+            let StoreEntry = { "name": NameRef[NameRef.length - 1].name, "address": NameRef[NameRef.length - 1].address }
+
+            console.log("YOU MUST ENTER INPUTS IN BOTH FIELDS, OTHERWISE THE CODE BREAKS, CURRENT ENTRY THAT WAS INPUTTED", StoreEntry)
+            
+            //adds it to the api/backend. The add function  takes the url & the current entry we are tying to add
+            axios.post("http://localhost:5298/api/Stores", StoreEntry).then(response => {
+                 //SINCE THIS IS AN ASYNC CALL, IT UPDATES ONLY AT ITS OWN TIME
+                 //response.data gives the ONLY the full current element, 
+                 //since the backend applies a unique id, that is what we need to get from the backend and attach it to our StoreEntry
+                 //and update that to our storelist
+
+                 //gets the storeid of the current entry FROM THE BACKEND and updates it on storeentry
+                 StoreEntry = { "storeId": response.data.storeId, "name": NameRef[NameRef.length - 1].name, "address": NameRef[NameRef.length - 1].address }
+                 //updates nameref
+                 NameRef[NameRef.length - 1].storeId = response.data.storeId;
+                 //updates it in the official array
+                 setStoreList(NameRef);
+            });
+            
+                //CLOSE THE MODAL
+                setCreateModalOpen(false);
+
+
+        }
+        
     }
+
     const handleAddAddress = (StoreAddress, CurrentIteratorDataValue) => {
         //storename is defined to be an empty element with storeid, name & address non defined
         
         let NameRef = [...storeList];
-        //initialize new array for sole reason to find max storeid
-        let arr = []
-
-        for (var x = 0; x < NameRef.length; x++) {
-            arr[x] = NameRef[x].storeId
-        }
-        //you have the storeid 
-        var maxStoreId = Math.max(...arr);
-        //new sotreid must be one higher
-        var NewStoreId = maxStoreId + 1;
-
+              
         //updates the value given in the input
         const { name, value } = CurrentIteratorDataValue.target;
 
-        //updates the name & storeid in the given array
-        var NewArrayEntry = { ...StoreAddress, ["storeId"]: NewStoreId, [name]: value };
+        //updates the name in the given array 
+        var NewArrayEntry = { ...StoreAddress, [name]: value };
 
         //pushes the new array element into the variable that contains all the arrays elements NameRef
         NameRef.push(NewArrayEntry);
 
         //NewStoreAddress ends up copying local var NameRef
         setNewStoreAddress(NameRef);
-        //console.log([...NewStoreAddress])
-        
+
+       
     }
     const handleAddName = (StoreName, CurrentIteratorDataValue) => {
         //storename is defined to be an empty element with storeid, name & address non defined
         
         let NameRef = [...storeList];
-
-        //initialize new array for sole reason to find max storeid
-        let arr = []
-
-        for (var x = 0; x < NameRef.length; x++) {
-            arr[x] = NameRef[x].storeId
-        }
-        //you have the storeid 
-        var maxStoreId = Math.max(...arr);
-        //new sotreid must be one higher
-        var NewStoreId = maxStoreId + 1;
-
+               
         //updates the value given in the input
         const { name, value } = CurrentIteratorDataValue.target;
 
-        //updates the name & storeid in the given array
-        var NewArrayEntry = { ...StoreName, ["storeId"]: NewStoreId, [name]: value };
+        //updates the name  in the given array 
+        var NewArrayEntry = { ...StoreName,  [name]: value };
         //pushes the new array element into the variable that contains all the arrays elements NameRef
         NameRef.push(NewArrayEntry);
 
         //NewStoreName ends up copying local var NameRef
         setNewStoreName(NameRef)
-        //console.log([...NewStoreName])
-        
+              
     }
 
-
-
-    
+      
 
 
     return (
         <div >
             <p></p>           
-            <Modal
+            <Modal 
                 onClose={() => setCreateModalOpen(false)}
                 onOpen={() => setCreateModalOpen(true)}
                 open={CreateModalOpen}
@@ -240,13 +240,13 @@ const Store = (props) => {
                         <Form.Field>
                             <Container textAlign='justified'><div>Name </div></Container>
                             <Form.Input placeholder='Name' width={12} fluid name="name" value={storeList.name}
-                                onChange={(e) => handleAddName({"storeId": '', "name": '', "address": ''}, e)} />
+                                onChange={(e) => handleAddName({ "storeId": '', "name": '', "address": ''}, e)} />
 
                         </Form.Field>
                         <Form.Field>
                             <Container textAlign='justified'><p>Address </p></Container>
                             <Form.Input placeholder='Address' width={12} fluid name="address" value={storeList.address}
-                                onChange={(e) => handleAddAddress({"storeId": '', "name": '', "address": ''}, e)} />
+                                onChange={(e) => handleAddAddress({ "storeId": '', "name": '', "address": ''}, e)} />
                         </Form.Field>
                     </Form>
                 </Modal.Content>
@@ -270,7 +270,7 @@ const Store = (props) => {
                     </Table.Row>
                 </Table.Header>
 
-                <Table.Body >
+                <Table.Body >   
                     {storeList.map(Storez => (
                         <tr key={Storez.storeId}>
                             <Table.Cell >{Storez.name}</Table.Cell>
@@ -278,9 +278,9 @@ const Store = (props) => {
                             <Table.Cell>
                                 <Button color='yellow' onClick={() => expandModal(Storez)} ><Icon name='calendar check' /> Edit</Button>
                                 <Modal
-                                    open={open}
-                                    onClose={() => setOpen(false)}
-                                    onOpen={() => setOpen(true)}
+                                    open={open} //open attribute is set to the 'open' variable in the hook
+                                    onClose={() => setOpen(false)}  //onClose attribute is called when a close event happens, & the hook is set to false 
+                                    onOpen={() => setOpen(true)}    //onOpen attribute is called when a open event happens, & the hook is set to true
                                 size={'tiny'}>
                                 <Header content='Edit Store' />
                                 <Modal.Content>
@@ -288,20 +288,20 @@ const Store = (props) => {
                                         <Form >
                                             <Form.Field>
                                                 <Container textAlign='justified'><div>Name </div></Container>
-                                                    <Form.Input placeholder='Name' width={12} value={SelectedCurrentElement && SelectedCurrentElement.storeName}
+                                                    <Form.Input placeholder='Name' width={12} value={SelectedCurrentElement && SelectedCurrentElement.name}
                                                     /*the name attribute is important otherwise you cant pass values for submission*/
                                                         name="name" onChange={handleChangeName.bind(this, SelectedCurrentElement)} />
                                             </Form.Field>
                                             <Form.Field>
                                                 <Container textAlign='justified'><p>Address </p></Container>
-                                                    <Form.Input placeholder='Address' width={12} value={SelectedCurrentElement && SelectedCurrentElement.storeAddress} name="address" onChange={handleChangeAddress.bind(this, SelectedCurrentElement)} />
+                                                    <Form.Input placeholder='Address' width={12} value={SelectedCurrentElement && SelectedCurrentElement.address} name="address" onChange={handleChangeAddress.bind(this, SelectedCurrentElement)} />
                                             </Form.Field>
                                         </Form>
                                     }
                                 </Modal.Content>
 
                                 <Modal.Actions>
-                                        <Button color='black' onClick={closeModal}>
+                                        <Button color='black' onClick={closeModal}> 
                                         Cancel
                                     </Button>
                                         <Button icon labelPosition='right' color='green' onClick={() => {
@@ -326,10 +326,10 @@ const Store = (props) => {
                                     <b>Are you Sure?</b>
                                 </Modal.Content>
                                 <Modal.Actions>
-                                        <Button color='black' onClick={ closeDeleteModal}>
+                                        <Button color='black' onClick={closeDeleteModal}>
                                         Cancel
                                     </Button>
-                                        <Button color='red' onClick={(e) => { handleinputDelete(SelectedCurrentElement); closeModal() }}>
+                                        <Button color='red' onClick={(e) => { handleinputDelete(SelectedCurrentElement); closeDeleteModal() }}>
                                         <Icon name='close' /> delete
                                     </Button>
                                 </Modal.Actions>
