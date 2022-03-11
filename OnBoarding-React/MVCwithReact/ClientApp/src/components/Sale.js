@@ -35,32 +35,54 @@ const Sales = (props) => {
 
 
     const [SaleEntry, setSaleEntry] = useState([]);
-    const [CombinedEntry, setCombinedEntry] = useState({ customerId: '', storeId: '', productId: '' });
+    const [Customer, setCustomer] = useState([])
+    const [Product, setProduct] = useState([])
+    const [Store, setStore] = useState([])
 
+    const [NewSoldDate, setNewSoldDate] = useState([]);
+    const [NewCustomer, setNewCustomer] = useState([]);
+    const [NewProduct, setNewProduct] = useState([]);
+    const [NewStore, setNewStore] = useState([]);
+   
 
     const searchItems = () => {
         //essentially retrieves data from the backend, the url is gotten from the swagger get function for each of the api
         
-        axios.get("http://localhost:5298/api/Customers").then(response => {
+        axios.get("http://localhost:5298/api/Customers").then(response => {        
 
-            setCombinedEntry({ customerId: response.data })
-            
+             //if your hook is an array, you can populate it in the normal method without using the set function
+            for (var i = 0; i < response.data.length; i++) {
+                Customer.push({ key: response.data[i].customerId, text: response.data[i].name, value: response.data[i].name });
+
+            }            
+            //console.log("The Customer array is now filled", Customer)
+           
         });
         axios.get("http://localhost:5298/api/Stores").then(response => {
 
-            setCombinedEntry({ storeId: response.data })
-            
+             //if your hook is an array, you can populate it in the normal method without using the set function
+            for (var i = 0; i < response.data.length; i++) {
+                Store.push({ key: response.data[i].storeId, text: response.data[i].name, value: response.data[i].name });
+
+            }
+            //console.log("The store array is now filled", Store)
+           
+
         });
         axios.get("http://localhost:5298/api/Products").then(response => {
 
-            setCombinedEntry({ productId: response.data })
-            
+            //if your hook is an array, you can populate it in the normal method without using the set function
+            for (var i = 0; i < response.data.length; i++) {
+                Product.push({ key: response.data[i].productId, text: response.data[i].name, value: response.data[i].name });
+
+            }
+            //console.log("The Product array is now filled", Product)
+
         });
 
         axios.get("http://localhost:5298/api/Sales").then(response => {
 
-            setSaleEntry(response.data)     //<-- has the entire array in salesentry
-            //console.log([SaleEntry])
+            setSaleEntry(response.data)     //<-- has the entire array in salesentry            
         });
 
     }
@@ -69,44 +91,210 @@ const Sales = (props) => {
     useEffect(() => searchItems(), []   /*if [] run searchitems() once & dont run again*/);
 
 
-    //FIGURE OUT HOW TO DYNAMICALLY POPULATE THESE ARRAYS FOR EACH OF THE OTHER CLASSES BASED ON THE AMOUNT OF ELEMENTS IN EACH OF THEM
-    const Customer = [
-        {
-            key: 'Jenny',
-            text: 'Jenny ',
-            value: 'jenny'
-        },
-        {
-            key: 'Elliot Fu',
-            text: 'Elliot Fu',
-            value: 'Elliot Fu'
+
+    const handleChangeDateSold = (CurrentElement, CurrentIteratorDataValue) => {
+
+        let NameRef = [...SaleEntry];
+
+        const index = NameRef.findIndex((item) => item.id === CurrentElement.id);
+        
+        NameRef[index] = { ...CurrentElement, 'dateSold': CurrentIteratorDataValue.target.value };
+        setSaleEntry(NameRef);
+        //SAVES!!!!!!!!!!
+
+        // add the current element in the hook
+        setSelectedCurrentElement(NameRef[index]);
+       // console.log(SaleEntry)
+    }
+
+   
+    const handleChangeProduct = (CurrentElement, CurrentIteratorDataValue) => {
+      
+        let NameRef = [...SaleEntry];
+    
+        const index = NameRef.findIndex((item) => item.id === CurrentElement.id);
+     
+        NameRef[index] = { ...CurrentElement, 'productId': CurrentIteratorDataValue.target.outerText };
+        setSaleEntry(NameRef);
+        //SAVES!!!!!!!!!!
+
+        // add the current element in the hook
+        setSelectedCurrentElement(NameRef[index]);
+
+    }
+    
+    const handleChangeCustomer = (CurrentElement, CurrentIteratorDataValue) => {
+        let NameRef = [...SaleEntry];
+        const index = NameRef.findIndex((item) => item.id === CurrentElement.id);
+        NameRef[index] = { ...CurrentElement, 'customerId': CurrentIteratorDataValue.target.outerText };
+        setSaleEntry(NameRef);
+        //SAVES!!!!!!!!!!
+
+        // NEW ADD CHRIS
+        setSelectedCurrentElement(NameRef[index]);
+    }
+
+    const handleChangeStore = (CurrentElement, CurrentIteratorDataValue) => {
+        let NameRef = [...SaleEntry];
+        const index = NameRef.findIndex((item) => item.id === CurrentElement.id);
+        NameRef[index] = { ...CurrentElement, 'storeId': CurrentIteratorDataValue.target.outerText };
+        setSaleEntry(NameRef);
+        //SAVES!!!!!!!!!!
+
+        // NEW ADD CHRIS
+        setSelectedCurrentElement(NameRef[index]);
+    }
+
+
+
+    const handleinput = (SalesEntry) => {
+        // the minute 'handleinput' is called, it automatically should be able to change or manipulate with the values of ParameterName
+        if (SalesEntry.productId === null || SalesEntry.productId.match(/^ *$/) !== null || SalesEntry.customerId === null || SalesEntry.customerId.match(/^ *$/) !== null || SalesEntry.storeId === null || SalesEntry.storeId.match(/^ *$/) !== null || SalesEntry.dateSold === null || SalesEntry.dateSold.toString().match(/^ *$/) !== null) {
+            //the minute any of the attributes in the current entry has a null value or whitespace it wont go further
+            console.log("ERROR!!!!!! EMPTY ENTRY!!!!!!!!")
         }
-    ]
-    const Product = [
-        {
-            key: 'apple',
-            text: 'apple ',
-            value: 'apple'
-        },
-        {
-            key: 'orange',
-            text: 'orange',
-            value: 'orange'
+        else {
+            console.log("SUCCESS ITS NOT AN EMPTY ENTRY, current array = ", SalesEntry)
+            axios.put('http://localhost:5298/api/Sales/' + SalesEntry.id, SalesEntry);
+            //UPDATES!!!!!!
         }
-    ]
-    const Store = [
-        {
-            key: 'paknsav',
-            text: 'paknsav ',
-            value: 'paknsav'
-        },
-        {
-            key: 'Countdown',
-            text: 'Countdown',
-            value: 'Countdown'
+    }
+
+    const handleinputDelete = (CurrentEntry) => {
+        // the minute 'handleinput' is called, it automatically should be able to change or manipulate with the values of ParameterName
+        const NameRef = [...SaleEntry];
+
+        const index = NameRef.findIndex((item) => item.id === CurrentEntry.id);
+
+        //Removes the speceific element from the array
+        NameRef.splice(index, 1);
+
+        //updates it in the official array
+        setSaleEntry(NameRef);
+
+        //deletes it from the api/backend. The delete function only takees the url + the id of the entry in its url
+        axios.delete('http://localhost:5298/api/Sales/' + CurrentEntry.id);
+
+        console.log("You have deleted this entry ->", CurrentEntry)
+    }
+
+
+    const handleinputAdd = () => {
+
+        //creating 4 new local vars that hold the hook variables arrays 
+        let ProductArray = [...NewProduct]
+        let CustomerArray = [...NewCustomer]
+        let StoreArray = [...NewStore]
+        let DateSoldArray = [...NewSoldDate];       
+              
+
+        if (StoreArray.length != 0 && DateSoldArray.length != 0 && CustomerArray.length != 0 && ProductArray.length!=0) {
+            //condition to force the user to enter something in all fields before clicking on submit
+
+            //combining all bits in the element in each array into the ProductArray
+            ProductArray[ProductArray.length - 1].customerId = CustomerArray[CustomerArray.length - 1].customerId
+            ProductArray[ProductArray.length - 1].storeId = StoreArray[StoreArray.length - 1].storeId
+            ProductArray[ProductArray.length - 1].dateSold = DateSoldArray[DateSoldArray.length - 1].dateSold
+           
+            console.log("THIS IS THE PENDING ENTRY WAITING TO BE PUSHED!!!!!!", ProductArray)
+            
+            
+            //For the post request, axios only needs the all attributes apart from the Id as it's automatically generated
+            //CurrentEntry only holds the productId, customerId, storeId & dateSold of the current element 
+            let CurrentEntry = {
+                "productId": ProductArray[ProductArray.length - 1].productId, "customerId": ProductArray[ProductArray.length - 1].customerId,
+                "storeId": ProductArray[ProductArray.length - 1].storeId, "dateSold": ProductArray[ProductArray.length - 1].dateSold
+            }
+
+            console.log("YOU MUST ENTER INPUTS IN BOTH FIELDS, OTHERWISE THE CODE BREAKS, CURRENT ENTRY THAT WAS INPUTTED", CurrentEntry)
+
+            //adds it to the api/backend. The add function  takes the url & the current entry we are tying to add
+            axios.post("http://localhost:5298/api/Sales", CurrentEntry).then(response => {
+                //SINCE THIS IS AN ASYNC CALL, IT UPDATES ONLY AT ITS OWN TIME
+                //response.data gives the ONLY the full current element, 
+                //since the backend applies a unique id, that is what we need to get from the backend and attach it to our CurrentEntry
+                //and update that to our storelist
+
+                //gets the id of the current entry FROM THE BACKEND and updates it on SaleEntry
+                CurrentEntry = {
+                    "id": response.data.id, "productId": ProductArray[ProductArray.length - 1].productId, "customerId": ProductArray[ProductArray.length - 1].customerId,
+                    "storeId": ProductArray[ProductArray.length - 1].storeId, "dateSold": ProductArray[ProductArray.length - 1].dateSold }
+                //updates ProductArray
+                ProductArray[ProductArray.length - 1].id = response.data.id;
+                //updates it in the official array
+                setSaleEntry(ProductArray);
+            });           
+
+            //CLOSE THE MODAL
+            setCreateModalOpen(false);
         }
-    ]
+    }
+
+
+
+    const handleAddDateSold = (DateEntry, CurrentIteratorDataValue) => {        
+        //DateEntry is an entry that is completely non defined
+        let NameRef = [...SaleEntry];
+
+        //updates the value given in the input
+        const { name, value } = CurrentIteratorDataValue.target;
+       
+        //updates the Date in the given array 
+        var NewArrayEntry = { ...DateEntry, [name]: value };
+        //pushes the new array element into the variable that contains all the arrays elements NameRef
+        NameRef.push(NewArrayEntry);
+
+        //setNewSoldDate ends up copying local var NameRef
+        setNewSoldDate(NameRef)
+
+        console.log("date entry", value)
+    }
+    
+    const handleAddCustomer = (CustomerEntry, CurrentIteratorDataValue) => {
+        //CustomerEntry is an entry that is completely non defined
+        let NameRef = [...SaleEntry];
+
+        //updates the customer in the given array 
+        var NewArrayEntry = { ...CustomerEntry, "customerId": CurrentIteratorDataValue.target.outerText };
+        //pushes the new array element into the variable that contains all the arrays elements NameRef
+        NameRef.push(NewArrayEntry);
+
+        //setNewCustomer ends up copying local var NameRef
+        setNewCustomer(NameRef)
+        console.log("customers entry",NameRef)
+    }
+    
+    const handleAddProduct = (ProductEntry, CurrentIteratorDataValue) => {
+        //ProductEntry is an entry that is completely non defined
+        let NameRef = [...SaleEntry];
+
+        //updates the product in the given array 
+        var NewArrayEntry = { ...ProductEntry, "productId": CurrentIteratorDataValue.target.outerText };
+        //pushes the new array element into the variable that contains all the arrays elements NameRef
+        NameRef.push(NewArrayEntry);
+
+        //setNewProduct ends up copying local var NameRef
+        setNewProduct(NameRef)
+        console.log("products entry", NameRef)
+    }
+    
+    const handleAddStore = (StoreEntry, CurrentIteratorDataValue) => {
+        //DateEntry is an entry that is completely non defined
+        let NameRef = [...SaleEntry];
+
+        //updates the store in the given array 
+        var NewArrayEntry = { ...StoreEntry, "storeId": CurrentIteratorDataValue.target.outerText };
+        //pushes the new array element into the variable that contains all the arrays elements NameRef
+        NameRef.push(NewArrayEntry);
+
+        //setNewStore ends up copying local var NameRef
+        setNewStore(NameRef)
+        console.log("stores entry", NameRef)
+    }
+    
+
     return (
+        
         <div >
             <p></p>
             <Modal
@@ -117,22 +305,26 @@ const Sales = (props) => {
                 size={'tiny'}>
                 <Header content='Create Sales' />
                 <Modal.Content>
+                   
                     <Form >
                         <Form.Field>
-                            <Container textAlign='justified'><div>Name </div></Container>
-                            <Form.Input placeholder='dd-mm-yyyy' width={6} fluid name="dateSold" value={SaleEntry.dateSold}
-                                /*onChange={(e) => handleAddName({ "id": '', "productId": '', "customerId": '', "storeId": '', "dateSold": '' }, e)}*/ />
+                            <Container textAlign='justified'><div>Date Sold </div></Container>
+                            <Form.Input placeholder='dd-mm-yyyy' width={6} fluid name="dateSold" value={SaleEntry.dateSold} type="date" data-date-format="DD MMMM YYYY"
+                                onChange={(e) => handleAddDateSold({ "id": '', "productId": '', "customerId": '', "storeId": '', "dateSold": '' }, e)} />
 
                         </Form.Field>
-                        <Form.Field>
-                            <Container textAlign='justified'><p>Customer </p></Container>                            
+                        <Form.Field>                           
+                            <Container textAlign='justified'><p>Customer </p></Container>                        
                             <Dropdown
                             placeholder='John'
                             fluid
                             width={12}
                             search
-                            selection
-                            options={Customer} />
+                            selection                                
+                            options={Customer}
+                            onChange={(e) => handleAddCustomer({ "id": '', "productId": '', "customerId": '', "storeId": '', "dateSold": '' }, e)}
+                              
+                            />
                         </Form.Field>
                         <Form.Field>
                             <Container textAlign='justified'><p>Product </p></Container>
@@ -141,7 +333,9 @@ const Sales = (props) => {
                                 fluid
                                 width={12}
                                 selection
-                                options={Product} />
+                                options={Product}
+                                onChange={(e) => handleAddProduct({ "id": '', "productId": '', "customerId": '', "storeId": '', "dateSold": '' }, e)}
+                               />
                         </Form.Field>
                         <Form.Field>
                             <Container textAlign='justified'><p>Store </p></Container>
@@ -150,7 +344,9 @@ const Sales = (props) => {
                                 fluid
                                 width={12}
                                 selection
-                                options={Store} />
+                                options={Store}
+                                onChange={(e) => handleAddStore({ "id": '', "productId": '', "customerId": '', "storeId": '', "dateSold": '' }, e)}
+                            />
                         </Form.Field>
                     </Form>
                 </Modal.Content>
@@ -158,7 +354,7 @@ const Sales = (props) => {
                     <Button color='black' onClick={() => setCreateModalOpen(false)}>
                         Cancel
                     </Button>
-                    <Button icon labelPosition='right' color='green' /*onClick={(e) => handleinputAdd()}*/>
+                    <Button icon labelPosition='right' color='green' onClick={(e) => handleinputAdd()}>
                         create
                         <Icon name='checkmark' /></Button>
                 </Modal.Actions>
@@ -173,10 +369,122 @@ const Sales = (props) => {
                         <Table.HeaderCell>Date Sold</Table.HeaderCell>
                         <Table.HeaderCell>Actions</Table.HeaderCell>
                         <Table.HeaderCell>Actions</Table.HeaderCell>
-                        {console.log([CombinedEntry]) }
+                        
                     </Table.Row>
                 </Table.Header>
+
+                <Table.Body >
+                    {SaleEntry.map(Salez => (
+                        <tr key={Salez.id}>
+                            <Table.Cell >{Salez.customerId}</Table.Cell>
+                            <Table.Cell >{Salez.productId}</Table.Cell>
+                            <Table.Cell >{Salez.storeId}</Table.Cell>
+                            <Table.Cell >{Salez.dateSold}</Table.Cell>
+                            <Table.Cell>
+                                <Button color='yellow' onClick={() => expandModal(Salez)} ><Icon name='calendar check' /> Edit</Button>
+                                <Modal
+                                    open={open} //open attribute is set to the 'open' variable in the hook
+                                    onClose={() => setOpen(false)}  //onClose attribute is called when a close event happens, & the hook is set to false 
+                                    onOpen={() => setOpen(true)}    //onOpen attribute is called when a open event happens, & the hook is set to true
+                                    size={'tiny'}>
+                                    <Header content='Edit Sales' />
+                                    <Modal.Content>
+                                        {
+                                            <Form >
+                                                <Form.Field>
+                                                    <Container textAlign='justified'><div>Date Sold </div></Container>                                                  
+                                                    <Form.Input placeholder='dd-mm-yyyy' width={6} fluid name="dateSold" value={SelectedCurrentElement && SelectedCurrentElement.dateSold} type="date" data-date-format="DD MMMM YYYY"
+                                                        onChange={handleChangeDateSold.bind(this, SelectedCurrentElement)} />
+
+                                                </Form.Field>
+
+
+                                                <Form.Field>
+                                                    <Container textAlign='justified'><p>Customer </p></Container>
+                                                    <Dropdown
+                                                        placeholder='John'
+                                                        fluid
+                                                        width={12}
+                                                        search
+                                                        selection
+                                                        options={Customer}
+                                                        onChange={handleChangeCustomer.bind(this, SelectedCurrentElement)}/>
+                                                </Form.Field>
+
+                                                <Form.Field>
+                                                    <Container textAlign='justified'><p>Product </p></Container>
+                                                    <Dropdown
+                                                        placeholder='Pear'
+                                                        fluid
+                                                        width={12}
+                                                        selection
+                                                        options={Product}
+                                                        onChange={handleChangeProduct.bind(this, SelectedCurrentElement)}
+                                                          />
+                                                </Form.Field>
+
+                                                <Form.Field>
+                                                    <Container textAlign='justified'><p>Store </p></Container>
+                                                    <Dropdown
+                                                        placeholder='CountDown'
+                                                        fluid
+                                                        width={12}
+                                                        selection
+                                                        options={Store}
+                                                        onChange={handleChangeStore.bind(this, SelectedCurrentElement)}                                                    />
+                                                </Form.Field>
+
+
+                                            </Form>
+                                        }
+                                    </Modal.Content>
+
+                                    <Modal.Actions>
+                                        <Button color='black' onClick={closeModal}>
+                                            Cancel
+                                        </Button>
+                                        <Button icon labelPosition='right' color='green' onClick={() => {
+                                            handleinput(SelectedCurrentElement);
+                                            closeModal();
+                                        }} >
+                                            edit
+                                            <Icon name='checkmark' /></Button>
+                                    </Modal.Actions>
+                                </Modal>
+                            </Table.Cell>
+                            
+
+
+                            <Table.Cell>
+                                <Button color='red' onClick={() => expandDeleteModal(Salez)}><Icon name='trash alternate' />Delete</Button>
+                                <Modal open={DeleteModalOpen}
+                                    onClose={() => setDeleteModalOpen(false)}
+                                    onOpen={() => setDeleteModalOpen(true)}>
+                                    <Header content='Delete Sales' />
+                                    <Modal.Content>
+                                        <b>Are you Sure?</b>
+                                    </Modal.Content>
+                                    <Modal.Actions>
+                                        <Button color='black' onClick={closeDeleteModal}>
+                                            Cancel
+                                        </Button>
+                                        <Button color='red' onClick={(e) => { handleinputDelete(SelectedCurrentElement); closeDeleteModal() }}>
+                                            <Icon name='close' /> delete
+                                        </Button>
+                                    </Modal.Actions>
+                                </Modal>
+                            </Table.Cell>
+                        </tr>
+                    ))}
+
+                </Table.Body>
+
+
+
                 
+
+
+               
                
 
             </Table>
@@ -198,76 +506,3 @@ export default Sales;
 
 
 
-/*
-
-<Table.Body >
-    {ProductList.map(Productz => (
-        <tr key={Productz.productId}>
-            <Table.Cell >{Productz.name}</Table.Cell>
-            <Table.Cell >{Productz.price}</Table.Cell>
-            <Table.Cell>
-                <Button color='yellow' onClick={() => expandModal(Productz)} ><Icon name='calendar check' /> Edit</Button>
-                <Modal
-                    open={open} //open attribute is set to the 'open' variable in the hook
-                    onClose={() => setOpen(false)}  //onClose attribute is called when a close event happens, & the hook is set to false 
-                    onOpen={() => setOpen(true)}    //onOpen attribute is called when a open event happens, & the hook is set to true
-                    size={'tiny'}>
-                    <Header content='Edit Product' />
-                    <Modal.Content>
-                        {
-                            <Form >
-                                <Form.Field>
-                                    <Container textAlign='justified'><div>Name </div></Container>
-                                    <Form.Input placeholder='Name' width={12} value={SelectedCurrentElement && SelectedCurrentElement.name}
-                                       
-                                        name="name" onChange={handleChangeName.bind(this, SelectedCurrentElement)} />
-                                </Form.Field>
-                                <Form.Field>
-                                    <Container textAlign='justified'><p>Price </p></Container>
-                                    <Form.Input placeholder='Price' width={12} value={SelectedCurrentElement && SelectedCurrentElement.price} name="price" onChange={handleChangePrice.bind(this, SelectedCurrentElement)} />
-                                </Form.Field>
-                            </Form>
-                        }
-                    </Modal.Content>
-
-                    <Modal.Actions>
-                        <Button color='black' onClick={closeModal}>
-                            Cancel
-                        </Button>
-                        <Button icon labelPosition='right' color='green' onClick={() => {
-                            handleinput(SelectedCurrentElement);
-                            closeModal();
-                        }} >
-                            edit
-                            <Icon name='checkmark' /></Button>
-                    </Modal.Actions>
-                </Modal>
-            </Table.Cell>
-
-
-
-            <Table.Cell>
-                <Button color='red' onClick={() => expandDeleteModal(Productz)}><Icon name='trash alternate' />Delete</Button>
-                <Modal open={DeleteModalOpen}
-                    onClose={() => setDeleteModalOpen(false)}
-                    onOpen={() => setDeleteModalOpen(true)}>
-                    <Header content='Delete Product' />
-                    <Modal.Content>
-                        <b>Are you Sure?</b>
-                    </Modal.Content>
-                    <Modal.Actions>
-                        <Button color='black' onClick={closeDeleteModal}>
-                            Cancel
-                        </Button>
-                        <Button color='red' onClick={(e) => { handleinputDelete(SelectedCurrentElement); closeDeleteModal() }}>
-                            <Icon name='close' /> delete
-                        </Button>
-                    </Modal.Actions>
-                </Modal>
-            </Table.Cell>
-        </tr>
-    ))}
-
-</Table.Body>
-
-*/
