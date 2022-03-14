@@ -7,7 +7,7 @@ const Store = (props) => {
 
    
 
-    // NEW ADD CHRIS
+    // NEW ADD 
     const [SelectedCurrentElement, setSelectedCurrentElement] = useState(null)   
     const [open, setOpen] = React.useState(false)
     const [CreateModalOpen, setCreateModalOpen] = React.useState(false)
@@ -48,7 +48,7 @@ const Store = (props) => {
     const searchItems = () => {
         //essentially retrieves data from the backend, the url is gotten from the swagger get function for each of the api
 
-        axios.get("http://localhost:5298/api/Stores").then(response => {
+        axios.get("https://onboardingtalent.azurewebsites.net/api/Stores").then(response => {
 
             setStoreList(response.data)
         });
@@ -104,7 +104,7 @@ const Store = (props) => {
         NameRef[index] = { ...StoreAddress, [name]: value };
         setStoreList(NameRef);
 
-        // NEW ADD CHRIS
+        // NEW ADD 
         setSelectedCurrentElement(NameRef[index]);       
     }
 
@@ -117,7 +117,7 @@ const Store = (props) => {
         else {
             console.log("SUCCESS ITS NOT AN EMPTY ENTRY, current array = ", StoreEntry)
 
-            axios.put('http://localhost:5298/api/Stores/' + StoreEntry.storeId, StoreEntry);
+            axios.put('https://onboardingtalent.azurewebsites.net/api/Stores/' + StoreEntry.storeId, StoreEntry);
              //UPDATES!!!!!!
         }
     }
@@ -135,7 +135,7 @@ const Store = (props) => {
         setStoreList(NameRef);
 
         //deletes it from the api/backend. The delete function only takees the url + the id of the entry in its url
-        axios.delete('http://localhost:5298/api/Stores/' + StoreEntry.storeId);
+        axios.delete('https://onboardingtalent.azurewebsites.net/api/Stores/' + StoreEntry.storeId);
 
         console.log("You have deleted this entry ->", StoreEntry)
                
@@ -163,7 +163,7 @@ const Store = (props) => {
             console.log("YOU MUST ENTER INPUTS IN BOTH FIELDS, OTHERWISE THE CODE BREAKS, CURRENT ENTRY THAT WAS INPUTTED", StoreEntry)
             
             //adds it to the api/backend. The add function  takes the url & the current entry we are tying to add
-            axios.post("http://localhost:5298/api/Stores", StoreEntry).then(response => {
+            axios.post("https://onboardingtalent.azurewebsites.net/api/Stores", StoreEntry).then(response => {
                  //SINCE THIS IS AN ASYNC CALL, IT UPDATES ONLY AT ITS OWN TIME
                  //response.data gives the ONLY the full current element, 
                  //since the backend applies a unique id, that is what we need to get from the backend and attach it to our StoreEntry

@@ -40,7 +40,6 @@ if (!app.Environment.IsDevelopment())
 app.UseCors(options=> { options.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true); });
 
 
-
 app.UseStaticFiles();
 
 

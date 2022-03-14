@@ -42,7 +42,7 @@ const Product = (props) => {
     const searchItems = () => {
         //essentially retrieves data from the backend, the url is gotten from the swagger get function for each of the api
 
-        axios.get("http://localhost:5298/api/Products").then(response => {
+        axios.get("https://onboardingtalent.azurewebsites.net/api/Products").then(response => {
 
             setProductList(response.data)
         });
@@ -87,7 +87,7 @@ const Product = (props) => {
 
             console.log("SUCCESS ITS NOT AN EMPTY ENTRY, current array = ", ProductEntry)
 
-            axios.put('http://localhost:5298/api/Products/' + ProductEntry.productId, ProductEntry);
+            axios.put('https://onboardingtalent.azurewebsites.net/api/Products/' + ProductEntry.productId, ProductEntry);
             //UPDATES!!!!!!
 
         }
@@ -106,14 +106,14 @@ const Product = (props) => {
         setProductList(NameRef);
 
         //deletes it from the api/backend. The delete function only takees the url + the id of the entry in its url
-        axios.delete('http://localhost:5298/api/Products/' + ProductEntry.productId);
+        axios.delete('https://onboardingtalent.azurewebsites.net/api/Products/' + ProductEntry.productId);
 
         console.log("You have deleted this entry ->", ProductEntry)
 
     }
 
     const handleinputAdd = () => {
-        //creating 2 new local vars that hold the hook variables array AddressRef & NameRef
+        //creating 2 new local vars that hold the hook variables array NameRef & PriceRef
         let NameRef = [...NewProductName];
         let PriceRef = [...NewProductPrice]
 
@@ -130,7 +130,7 @@ const Product = (props) => {
 
 
             //adds it to the api/backend. The add function  takes the url & the current entry we are tying to add
-            axios.post("http://localhost:5298/api/Products", ProductEntry).then(response => {
+            axios.post("https://onboardingtalent.azurewebsites.net/api/Products", ProductEntry).then(response => {
                 //ADDS!!!!!!
                 //gets the productId of the current entry FROM THE BACKEND and updates it on ProductEntry
                 ProductEntry = { "productId": response.data.productId, "name": NameRef[NameRef.length - 1].name, "price": NameRef[NameRef.length - 1].price }

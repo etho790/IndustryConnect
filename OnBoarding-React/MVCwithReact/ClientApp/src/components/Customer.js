@@ -39,7 +39,7 @@ const Customer = (props) => {
     //use state is the hook that is stored in the variable CustomerList.
     //setCustomerList is the function that automatically changes the value in the hook
     //the minute a value is passed in it via function call, thereby the value in CustomerList
-    //LIST STORE
+  
     const [CustomerList, setCustomerList] = useState([]);
     const [NewCustomerName, setNewCustomerName] = useState([]);
     const [NewCustomerAddress, setNewCustomerAddress] = useState([]);
@@ -48,7 +48,7 @@ const Customer = (props) => {
     const searchItems = () => {
         //essentially retrieves data from the backend, the url is gotten from the swagger get function for each of the api
 
-        axios.get("http://localhost:5298/api/Customers").then(response => {
+        axios.get("https://onboardingtalent.azurewebsites.net/api/Customers").then(response => {
 
             setCustomerList(response.data)
         });
@@ -99,7 +99,7 @@ const Customer = (props) => {
         }
         else {
             console.log("SUCCESS ITS NOT AN EMPTY ENTRY, current array = ", CustomerEntry)
-            axios.put('http://localhost:5298/api/Customers/' + CustomerEntry.customerId, CustomerEntry);
+            axios.put('https://onboardingtalent.azurewebsites.net/api/Customers/' + CustomerEntry.customerId, CustomerEntry);
             //UPDATES!!!!!!
         }
         
@@ -118,7 +118,7 @@ const Customer = (props) => {
         setCustomerList(NameRef);
 
         //deletes it from the api/backend. The delete function only takees the url + the id of the entry in its url
-        axios.delete('http://localhost:5298/api/Customers/' + CustomerEntry.customerId);
+        axios.delete('https://onboardingtalent.azurewebsites.net/api/Customers/' + CustomerEntry.customerId);
 
         console.log("You have deleted this entry ->", CustomerEntry)
 
@@ -141,7 +141,7 @@ const Customer = (props) => {
 
             console.log("YOU MUST ENTER INPUTS IN BOTH FIELDS, OTHERWISE THE CODE BREAKS, CURRENT ENTRY THAT WAS INPUTTED", CustomerEntry)
             //adds it to the api/backend. The add function  takes the url & the current entry we are tying to add
-            axios.post("http://localhost:5298/api/Customers", CustomerEntry).then(response => { 
+            axios.post("https://onboardingtalent.azurewebsites.net/api/Customers", CustomerEntry).then(response => {
                  //ADDS!!!!!!
 
                 //gets the customerId of the current entry FROM THE BACKEND and updates it on CustomerEntry

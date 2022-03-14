@@ -48,7 +48,7 @@ const Sales = (props) => {
     const searchItems = () => {
         //essentially retrieves data from the backend, the url is gotten from the swagger get function for each of the api
         
-        axios.get("http://localhost:5298/api/Customers").then(response => {        
+        axios.get("https://onboardingtalent.azurewebsites.net/api/Customers").then(response => {
 
              //if your hook is an array, you can populate it in the normal method without using the set function
             for (var i = 0; i < response.data.length; i++) {
@@ -58,7 +58,7 @@ const Sales = (props) => {
             //console.log("The Customer array is now filled", Customer)
            
         });
-        axios.get("http://localhost:5298/api/Stores").then(response => {
+        axios.get("https://onboardingtalent.azurewebsites.net/api/Stores").then(response => {
 
              //if your hook is an array, you can populate it in the normal method without using the set function
             for (var i = 0; i < response.data.length; i++) {
@@ -69,7 +69,7 @@ const Sales = (props) => {
            
 
         });
-        axios.get("http://localhost:5298/api/Products").then(response => {
+        axios.get("https://onboardingtalent.azurewebsites.net/api/Products").then(response => {
 
             //if your hook is an array, you can populate it in the normal method without using the set function
             for (var i = 0; i < response.data.length; i++) {
@@ -80,7 +80,7 @@ const Sales = (props) => {
 
         });
 
-        axios.get("http://localhost:5298/api/Sales").then(response => {
+        axios.get("https://onboardingtalent.azurewebsites.net/api/Sales").then(response => {
 
             setSaleEntry(response.data)     //<-- has the entire array in salesentry            
         });
@@ -130,7 +130,7 @@ const Sales = (props) => {
         setSaleEntry(NameRef);
         //SAVES!!!!!!!!!!
 
-        // NEW ADD CHRIS
+        //
         setSelectedCurrentElement(NameRef[index]);
     }
 
@@ -141,7 +141,7 @@ const Sales = (props) => {
         setSaleEntry(NameRef);
         //SAVES!!!!!!!!!!
 
-        // NEW ADD CHRIS
+        // 
         setSelectedCurrentElement(NameRef[index]);
     }
 
@@ -155,7 +155,7 @@ const Sales = (props) => {
         }
         else {
             console.log("SUCCESS ITS NOT AN EMPTY ENTRY, current array = ", SalesEntry)
-            axios.put('http://localhost:5298/api/Sales/' + SalesEntry.id, SalesEntry);
+            axios.put('https://onboardingtalent.azurewebsites.net/api/Sales/' + SalesEntry.id, SalesEntry);
             //UPDATES!!!!!!
         }
     }
@@ -173,7 +173,7 @@ const Sales = (props) => {
         setSaleEntry(NameRef);
 
         //deletes it from the api/backend. The delete function only takees the url + the id of the entry in its url
-        axios.delete('http://localhost:5298/api/Sales/' + CurrentEntry.id);
+        axios.delete('https://onboardingtalent.azurewebsites.net/api/Sales/' + CurrentEntry.id);
 
         console.log("You have deleted this entry ->", CurrentEntry)
     }
@@ -209,7 +209,7 @@ const Sales = (props) => {
             console.log("YOU MUST ENTER INPUTS IN BOTH FIELDS, OTHERWISE THE CODE BREAKS, CURRENT ENTRY THAT WAS INPUTTED", CurrentEntry)
 
             //adds it to the api/backend. The add function  takes the url & the current entry we are tying to add
-            axios.post("http://localhost:5298/api/Sales", CurrentEntry).then(response => {
+            axios.post("https://onboardingtalent.azurewebsites.net/api/Sales", CurrentEntry).then(response => {
                 //SINCE THIS IS AN ASYNC CALL, IT UPDATES ONLY AT ITS OWN TIME
                 //response.data gives the ONLY the full current element, 
                 //since the backend applies a unique id, that is what we need to get from the backend and attach it to our CurrentEntry
@@ -233,7 +233,7 @@ const Sales = (props) => {
 
 
     const handleAddDateSold = (DateEntry, CurrentIteratorDataValue) => {        
-        //DateEntry is an entry that is completely non defined
+        //DateEntry is an entry that is manually defined but with empty values
         let NameRef = [...SaleEntry];
 
         //updates the value given in the input
@@ -251,7 +251,7 @@ const Sales = (props) => {
     }
     
     const handleAddCustomer = (CustomerEntry, CurrentIteratorDataValue) => {
-        //CustomerEntry is an entry that is completely non defined
+        //CustomerEntry is an entry that is manually defined but with empty values
         let NameRef = [...SaleEntry];
 
         //updates the customer in the given array 
@@ -265,7 +265,7 @@ const Sales = (props) => {
     }
     
     const handleAddProduct = (ProductEntry, CurrentIteratorDataValue) => {
-        //ProductEntry is an entry that is completely non defined
+        //ProductEntry is an entry that is manually defined but with empty values
         let NameRef = [...SaleEntry];
 
         //updates the product in the given array 
@@ -279,7 +279,7 @@ const Sales = (props) => {
     }
     
     const handleAddStore = (StoreEntry, CurrentIteratorDataValue) => {
-        //DateEntry is an entry that is completely non defined
+        //DateEntry is an entry that is manually defined but with empty values
         let NameRef = [...SaleEntry];
 
         //updates the store in the given array 
