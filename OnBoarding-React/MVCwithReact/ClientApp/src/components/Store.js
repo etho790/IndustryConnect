@@ -13,6 +13,7 @@ const Store = (props) => {
     const [CreateModalOpen, setCreateModalOpen] = React.useState(false)
     const [DeleteModalOpen, setDeleteModalOpen] = React.useState(false)
 
+    //THE PURPOSE OF THE expandModal & THE expandDeleteModal FUNCTIONS ENABLE US TO NOT JUST CLOSE THE MODAL BUT ALSO ENABLES US TO CARRY THE SPECIFIC EDIT & DELETE FUNCTIONALITY FOR THAT CURRENT PARTICULAR ELEMENT IN THE ARRAY, OTHERWISE IT ENDS UP BEING NON SPECIFIC.
     const expandModal = (CurrentElement) => {
         //essentially is the iterator passed in pointing to the current element
         setSelectedCurrentElement(CurrentElement);  //hook takes in the current element
