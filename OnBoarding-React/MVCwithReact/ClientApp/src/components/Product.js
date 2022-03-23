@@ -295,10 +295,8 @@ const Product = (props) => {
                             </Table.Cell>
                         </tr>
                     ))}
-
                 </Table.Body>
             </Table>
-
         </div>
     );
     }
